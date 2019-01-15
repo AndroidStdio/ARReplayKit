@@ -9,7 +9,7 @@ import UIKit
 import ReplayKit
 import AVKit
 
-
+///
 protocol RecorderDelegate: class {
     
 }
@@ -20,9 +20,11 @@ class Recorder: NSObject {
     
     var previewViewController: RPPreviewViewController?
     
-    var assetWriter:AVAssetWriter!
-    var videoInput:AVAssetWriterInput!
+    private var assetWriter:AVAssetWriter!
+    private var videoInput:AVAssetWriterInput!
+    private var audioInput: AVAssetWriterInput!
     
+    var startSesstion = false
     // MARK: Start/Stop Screen Recording
     
     func startScreenRecording() {
@@ -104,48 +106,103 @@ class Recorder: NSObject {
             }
             assetWriter = try! AVAssetWriter(outputURL: fileURL, fileType:
                 AVFileType.mp4)
-            let videoOutputSettings: Dictionary<String, Any> = [
+            let videoOutputSettings: [String : Any] = [
                 AVVideoCodecKey : AVVideoCodecType.h264,
                 AVVideoWidthKey : UIScreen.main.bounds.size.width,
                 AVVideoHeightKey : UIScreen.main.bounds.size.height
-            ];
-            
-            videoInput  = AVAssetWriterInput (mediaType: AVMediaType.video, outputSettings: videoOutputSettings)
+            ]
+
+            var channelLayout = AudioChannelLayout.init()
+            channelLayout.mChannelLayoutTag = kAudioChannelLayoutTag_MPEG_5_1_D
+            let audioOutputSettings: [String : Any] = [
+                AVNumberOfChannelsKey: 6,
+                AVFormatIDKey: kAudioFormatMPEG4AAC_HE,
+                AVSampleRateKey: 44100,
+                AVChannelLayoutKey: NSData(bytes: &channelLayout, length: MemoryLayout.size(ofValue: channelLayout)),
+                ]
+
+            videoInput = AVAssetWriterInput (mediaType: AVMediaType.video, outputSettings: videoOutputSettings)
+            audioInput  = AVAssetWriterInput(mediaType: AVMediaType.audio,outputSettings: audioOutputSettings)
             videoInput.expectsMediaDataInRealTime = true
+            audioInput.expectsMediaDataInRealTime = true
             assetWriter.add(videoInput)
+            assetWriter.add(audioInput)
             
-            RPScreenRecorder.shared().startCapture(handler: { (sample, bufferType, error) in
-                //                print(sample,bufferType,error)
-                
+            let sharedRecorder = RPScreenRecorder.shared()
+            sharedRecorder.startCapture(handler: { (sample, bufferType, error) in
                 recordingHandler(error)
                 
                 if CMSampleBufferDataIsReady(sample)
                 {
-                    if self.assetWriter.status == AVAssetWriter.Status.unknown
-                    {
-                        self.assetWriter.startWriting()
-                        self.assetWriter.startSession(atSourceTime: CMSampleBufferGetPresentationTimeStamp(sample))
+                    DispatchQueue.main.async { [weak self] in
+                        if self?.assetWriter.status == AVAssetWriter.Status.unknown {
+                            print("AVAssetWriterStatus.unknown")
+                            if !(self?.assetWriter.startWriting())! {
+                                return
+                            }
+                            self?.assetWriter.startSession(atSourceTime: CMSampleBufferGetPresentationTimeStamp(sample))
+                            self?.startSesstion = true
+                        }
                     }
                     
                     if self.assetWriter.status == AVAssetWriter.Status.failed {
-                        print("Error occured, status = \(self.assetWriter.status.rawValue), \(self.assetWriter.error!.localizedDescription) \(String(describing: self.assetWriter.error))")
+                        
+                        print("Error occured, status = \(String(describing: self.assetWriter.status.rawValue)), \(String(describing: self.assetWriter.error!.localizedDescription)) \(String(describing: self.assetWriter.error))")
+                        recordingHandler(self.assetWriter.error)
                         return
                     }
                     
-                    if (bufferType == .video)
-                    {
-                        if self.videoInput.isReadyForMoreMediaData
-                        {
+                    if (bufferType == .video) {
+                        if(self.videoInput.isReadyForMoreMediaData) && self.startSesstion {
                             self.videoInput.append(sample)
                         }
                     }
+                    
+
+                    if (bufferType == .audioApp) {
+                        if self.audioInput.isReadyForMoreMediaData
+                        {
+                            //print("Audio Buffer Came")
+                            self.audioInput.append(sample)
+                        }
+                    }
                 }
-                
+            }, completionHandler: { (error) in
+                // 在这里来更新ui
+                print("--recorder complete error: \(error)")
                 recordingHandler(error)
-                //                debugPrint(error)
             })
         } else {
             // Fallback on earlier versions
+        }
+    }
+    
+    func stopRecording(isBack: Bool, aPathName: String ,handler: @escaping (Error?) -> Void) {
+        
+        //var isSucessFullsave = false
+        if #available(iOS 11.0, *) {
+            self.startSesstion = false
+            RPScreenRecorder.shared().stopCapture{ (error) in
+                self.videoInput.markAsFinished()
+                self.audioInput.markAsFinished()
+                
+                handler(error)
+                if error == nil{
+                    self.assetWriter.finishWriting{
+                        self.startSesstion = false
+                        print(ReplayFileUtil.fetchAllReplays())
+                        if !isBack {
+                            // self.PhotosSaveWithAurtorise(aPathName: aPathName)
+                        } else {
+                            // self.deleteDirectory()
+                        }
+                    }
+                } else {
+                    // self.deleteDirectory()
+                }
+            }
+        } else {
+            // print("Fallback on earlier versions")
         }
     }
     
@@ -185,3 +242,5 @@ extension Recorder : RPPreviewViewControllerDelegate {
         previewViewController?.dismiss(animated: true, completion: nil)
     }
 }
+
+

@@ -52,10 +52,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func startRecord(_ sender: UIButton) {
         print("--startRecord")
-        // recorder.startScreenRecording()
-        recorder.startRecording(withFileName: "hhhh") { (error) in
-            print("-----start")
-        }
+        recorder.startScreenRecording()
+//        recorder.startRecording(withFileName: "hhhh") { (error) in
+//            print("-----start")
+//        }
         
     }
     
@@ -66,13 +66,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         //            self.present(self.recorder.previewViewController!, animated: true, completion: nil)
         //        }
         
-//        recorder.stopRecording { (error) in
-//            print("-----stop")
-//        }
-        
-        recorder.stopRecording(isBack: false, aPathName: "qqqq") { (error) in
+        recorder.stopRecording { (error) in
             print("-----stop")
         }
+        
+//        recorder.stopRecording(isBack: false, aPathName: "qqqq") { (error) in
+//            print("-----stop")
+//        }
     }
 
     // MARK: - ARSCNViewDelegate

@@ -92,8 +92,7 @@ class Recorder: NSObject {
     }
     
     //MARK: Screen Recording
-    func startRecording(withFileName fileName: String, recordingHandler:@escaping (Error?)-> Void)
-    {
+    func startRecording(withFileName fileName: String, recordingHandler:@escaping (Error?)-> Void) {
         if #available(iOS 11.0, *) {
             let fileURL = URL(fileURLWithPath: ReplayFileUtil.filePath(fileName))
             if FileManager.default.fileExists(atPath: fileURL.path) { // 文件存在删除文件
@@ -145,20 +144,16 @@ class Recorder: NSObject {
                 recordingHandler(error)
                 //                debugPrint(error)
             })
-    } else {
+        } else {
             // Fallback on earlier versions
         }
     }
     
-    func stopRecording(handler: @escaping (Error?) -> Void)
-    {
-        if #available(iOS 11.0, *)
-        {
-            RPScreenRecorder.shared().stopCapture
-                {    (error) in
+    func stopRecording(handler: @escaping (Error?) -> Void) {
+        if #available(iOS 11.0, *) {
+            RPScreenRecorder.shared().stopCapture { (error) in
                     handler(error)
-                    self.assetWriter.finishWriting
-                        {
+                    self.assetWriter.finishWriting {
                             print(ReplayFileUtil.fetchAllReplays())
                     }
             }
@@ -166,8 +161,6 @@ class Recorder: NSObject {
             // Fallback on earlier versions
         }
     }
-    
-    
 }
 
 extension Recorder: RPScreenRecorderDelegate {
