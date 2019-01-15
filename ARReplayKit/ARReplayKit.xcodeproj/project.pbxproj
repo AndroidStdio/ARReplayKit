@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		7ED6015C21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED6015B21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift */; };
-		7ED6015E21EDC37200DBD8D9 /* Recorder_1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED6015D21EDC37200DBD8D9 /* Recorder_1.swift */; };
 		7ED6016021EDC78500DBD8D9 /* Recorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED6015F21EDC78500DBD8D9 /* Recorder.swift */; };
 		7EFE833721E5E45D00911A75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE833621E5E45D00911A75 /* AppDelegate.swift */; };
 		7EFE833921E5E45D00911A75 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE833821E5E45D00911A75 /* art.scnassets */; };
@@ -20,9 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7ED6015921EC7FB200DBD8D9 /* ScreenRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecorder.swift; sourceTree = "<group>"; };
 		7ED6015B21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraEngineVideoEncoder.swift; sourceTree = "<group>"; };
-		7ED6015D21EDC37200DBD8D9 /* Recorder_1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recorder_1.swift; sourceTree = "<group>"; };
 		7ED6015F21EDC78500DBD8D9 /* Recorder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
 		7EFE833321E5E45D00911A75 /* ARReplayKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARReplayKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EFE833621E5E45D00911A75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -33,7 +30,6 @@
 		7EFE834221E5E45F00911A75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7EFE834421E5E45F00911A75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EFE834A21E5E4CE00911A75 /* FileUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileUtil.swift; sourceTree = "<group>"; };
-		7EFE834C21E5E4E700911A75 /* Recorder_2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recorder_2.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,9 +66,6 @@
 				7EFE833821E5E45D00911A75 /* art.scnassets */,
 				7EFE833A21E5E45D00911A75 /* ViewController.swift */,
 				7ED6015F21EDC78500DBD8D9 /* Recorder.swift */,
-				7ED6015D21EDC37200DBD8D9 /* Recorder_1.swift */,
-				7EFE834C21E5E4E700911A75 /* Recorder_2.swift */,
-				7ED6015921EC7FB200DBD8D9 /* ScreenRecorder.swift */,
 				7ED6015B21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift */,
 				7EFE834A21E5E4CE00911A75 /* FileUtil.swift */,
 				7EFE833C21E5E45D00911A75 /* Main.storyboard */,
@@ -155,7 +148,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7ED6015E21EDC37200DBD8D9 /* Recorder_1.swift in Sources */,
 				7ED6015C21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift in Sources */,
 				7EFE834B21E5E4CE00911A75 /* FileUtil.swift in Sources */,
 				7ED6016021EDC78500DBD8D9 /* Recorder.swift in Sources */,
