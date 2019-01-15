@@ -66,10 +66,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         //            self.present(self.recorder.previewViewController!, animated: true, completion: nil)
         //        }
         
-        recorder.stopRecording { (error) in
+//        recorder.stopRecording { (error) in
+//            print("-----stop")
+//        }
+        
+        recorder.stopRecording(isBack: false, aPathName: "qqqq") { (error) in
             print("-----stop")
         }
-        
     }
 
     // MARK: - ARSCNViewDelegate

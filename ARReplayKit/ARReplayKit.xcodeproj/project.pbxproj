@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7ED6015C21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED6015B21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift */; };
 		7EFE833721E5E45D00911A75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE833621E5E45D00911A75 /* AppDelegate.swift */; };
 		7EFE833921E5E45D00911A75 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EFE833821E5E45D00911A75 /* art.scnassets */; };
 		7EFE833B21E5E45D00911A75 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFE833A21E5E45D00911A75 /* ViewController.swift */; };
@@ -18,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7ED6015921EC7FB200DBD8D9 /* ScreenRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenRecorder.swift; sourceTree = "<group>"; };
+		7ED6015B21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraEngineVideoEncoder.swift; sourceTree = "<group>"; };
 		7EFE833321E5E45D00911A75 /* ARReplayKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARReplayKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EFE833621E5E45D00911A75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7EFE833821E5E45D00911A75 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -64,6 +67,8 @@
 				7EFE833821E5E45D00911A75 /* art.scnassets */,
 				7EFE833A21E5E45D00911A75 /* ViewController.swift */,
 				7EFE834C21E5E4E700911A75 /* Recorder.swift */,
+				7ED6015921EC7FB200DBD8D9 /* ScreenRecorder.swift */,
+				7ED6015B21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift */,
 				7EFE834A21E5E4CE00911A75 /* FileUtil.swift */,
 				7EFE833C21E5E45D00911A75 /* Main.storyboard */,
 				7EFE833F21E5E45F00911A75 /* Assets.xcassets */,
@@ -145,6 +150,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ED6015C21ED847300DBD8D9 /* CameraEngineVideoEncoder.swift in Sources */,
 				7EFE834B21E5E4CE00911A75 /* FileUtil.swift in Sources */,
 				7EFE833B21E5E45D00911A75 /* ViewController.swift in Sources */,
 				7EFE833721E5E45D00911A75 /* AppDelegate.swift in Sources */,
