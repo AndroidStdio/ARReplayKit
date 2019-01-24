@@ -9,8 +9,6 @@
 import UIKit
 import AVFoundation
 
-public typealias blockCompletionCaptureVideo = (_ url: URL?, _ error: NSError?) -> (Void)
-
 public enum CameraEngineVideoEncoderEncoderSettings: String {
     case Preset640x480
     case Preset960x540
@@ -174,8 +172,7 @@ class CameraEngineVideoEncoder {
                 if self.videoInputWriter.isReadyForMoreMediaData {
                     self.videoInputWriter.append(sampleBuffer)
                 }
-            }
-            else {
+            } else {
                 if self.audioInputWriter.isReadyForMoreMediaData {
                     self.audioInputWriter.append(sampleBuffer)
                 }

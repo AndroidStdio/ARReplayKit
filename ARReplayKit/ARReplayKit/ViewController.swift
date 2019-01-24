@@ -52,27 +52,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func startRecord(_ sender: UIButton) {
         print("--startRecord")
-        recorder.startScreenRecording()
-//        recorder.startRecording(withFileName: "hhhh") { (error) in
-//            print("-----start")
-//        }
-        
+        // recorder.startScreenRecording()
+        if let url = CameraEngineFileManager.temporaryPath("firstvideo.mp4") {
+            recorder.startRecordingVideo(url) { (url, error) -> (Void) in
+                print("-video-\(String(describing: url?.absoluteString))-\(error.debugDescription)")
+            }
+        }
     }
     
     @IBAction func stopRecord(_ sender: UIButton) {
         print("--stopRecord")
-        //        recorder.stopScreenRecording {
-        //            print("--stopRecord2")
-        //            self.present(self.recorder.previewViewController!, animated: true, completion: nil)
-        //        }
-        
-        recorder.stopRecording { (error) in
-            print("-----stop")
-        }
-        
-//        recorder.stopRecording(isBack: false, aPathName: "qqqq") { (error) in
-//            print("-----stop")
-//        }
+        recorder.stopRecordingVideo()
     }
 
     // MARK: - ARSCNViewDelegate
