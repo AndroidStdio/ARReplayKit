@@ -94,7 +94,8 @@ class CameraEngineVideoEncoder {
     private var assetWriter: AVAssetWriter!
     private var videoInputWriter: AVAssetWriterInput!
     private var audioInputWriter: AVAssetWriterInput!
-    private var firstFrame = false
+    private var isWriting = false
+    private var firstFrame = true
     private var startTime: CMTime!
     
     lazy var presetSettingEncoder: AVOutputSettingsAssistant? = {
@@ -102,7 +103,7 @@ class CameraEngineVideoEncoder {
     }()
     
     private func initVideoEncoder(_ url: URL) {
-        self.firstFrame = false
+        self.firstFrame = true
         guard let presetSettingEncoder = self.presetSettingEncoder else {
             print("[Camera engine] presetSettingEncoder = nil")
             return
@@ -141,12 +142,14 @@ class CameraEngineVideoEncoder {
     }
     
     func startWriting(_ url: URL) {
-        self.firstFrame = false
+        self.isWriting = true
+        self.firstFrame = true
         self.startTime = CMClockGetTime(CMClockGetHostTimeClock())
         self.initVideoEncoder(url)
     }
     
     func stopWriting(_ blockCompletion: blockCompletionCaptureVideo?) {
+        self.isWriting = false
         self.videoInputWriter.markAsFinished()
         self.audioInputWriter.markAsFinished()
         
@@ -157,24 +160,53 @@ class CameraEngineVideoEncoder {
         }
     }
     
+//    func appendBuffer(_ sampleBuffer: CMSampleBuffer!, isVideo: Bool) {
+//        if !isVideo && !self.firstFrame {
+//            return
+//        }
+//        self.firstFrame = true
+//        if CMSampleBufferDataIsReady(sampleBuffer) {
+//            if self.assetWriter.status == AVAssetWriter.Status.unknown {
+//                let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+//                self.assetWriter.startWriting()
+//                self.assetWriter.startSession(atSourceTime: timestamp)
+//            }
+//            if isVideo {
+//                if self.videoInputWriter.isReadyForMoreMediaData {
+//                    self.videoInputWriter.append(sampleBuffer)
+//                }
+//            } else {
+//                if self.audioInputWriter.isReadyForMoreMediaData {
+//                    self.audioInputWriter.append(sampleBuffer)
+//                }
+//            }
+//        }
+//    }
+    
     func appendBuffer(_ sampleBuffer: CMSampleBuffer!, isVideo: Bool) {
-        if !isVideo && !self.firstFrame {
+        if !isWriting {
             return
         }
-        self.firstFrame = true
+        
         if CMSampleBufferDataIsReady(sampleBuffer) {
-            if self.assetWriter.status == AVAssetWriter.Status.unknown {
-                let startTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-                self.assetWriter.startWriting()
-                self.assetWriter.startSession(atSourceTime: startTime)
-            }
             if isVideo {
+                let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+                if self.firstFrame {
+                    if self.assetWriter.startWriting() {
+                        self.assetWriter.startSession(atSourceTime: timestamp)
+                    } else {
+                        print("Failed to start writing")
+                    }
+                    self.firstFrame = false
+                }
                 if self.videoInputWriter.isReadyForMoreMediaData {
                     self.videoInputWriter.append(sampleBuffer)
                 }
             } else {
-                if self.audioInputWriter.isReadyForMoreMediaData {
-                    self.audioInputWriter.append(sampleBuffer)
+                if !self.firstFrame {
+                    if self.audioInputWriter.isReadyForMoreMediaData {
+                        self.audioInputWriter.append(sampleBuffer)
+                    }
                 }
             }
         }
