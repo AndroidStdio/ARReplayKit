@@ -116,9 +116,30 @@ class CameraEngineVideoEncoder {
             fatalError("error init assetWriter")
         }
         
-        let videoOutputSettings = presetSettingEncoder.videoSettings
-        let audioOutputSettings = presetSettingEncoder.audioSettings
+        // let videoOutputSettings = presetSettingEncoder.videoSettings
         
+        let width = UIScreen.main.scale == 3.0 ?  Int(UIScreen.main.bounds.width * 1920 / UIScreen.main.bounds.height) : Int(UIScreen.main.nativeBounds.width)
+        let height = UIScreen.main.scale == 3.0 ? 1920 : Int(UIScreen.main.nativeBounds.height)
+        let videoOutputSettings: [String : Any] = [
+            AVVideoCodecKey : AVVideoCodecType.h264,
+            AVVideoWidthKey : width,
+            AVVideoHeightKey : height
+        ]
+//        guard let format = CMSampleBufferGetFormatDescription(buffer),
+//            let stream = CMAudioFormatDescriptionGetStreamBasicDescription(format) else {
+//                print("fail to setup audioInput")
+//                return
+//        }
+        let audioOutputSettings = presetSettingEncoder.audioSettings
+//        let audioOutputSettings = [
+//            AVFormatIDKey : kAudioFormatMPEG4AAC,
+//            AVNumberOfChannelsKey : stream.pointee.mChannelsPerFrame,
+//            AVSampleRateKey : stream.pointee.mSampleRate,
+//            AVEncoderBitRateKey : 44100
+//            ] as [String : Any]
+        
+        print("--videoOutputSettings-\(String(describing: videoOutputSettings))")
+        print("--audioOutputSettings-\(String(describing: audioOutputSettings))")
         guard self.assetWriter.canApply(outputSettings: videoOutputSettings, forMediaType: AVMediaType.video) else {
             fatalError("Negative [VIDEO] : Can't apply the Output settings...")
         }
